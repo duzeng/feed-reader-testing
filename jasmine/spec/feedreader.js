@@ -88,16 +88,16 @@ $(function() {
 
         beforeEach(function(done){
             originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
  
-            loadFeed(1,function(){
+            loadFeed(3,function(){
                 done();
             }); 
         });
 
         it('should grab initial entries',function(done){
             //第一个.enctry jquery对象
-            let child=feed.find('.entry:first-child');
+            const child=feed.find('.entry:first-child');
             expect(child.length).not.toBe(0);
             //expect($(child[0]).hasClass('entry')).toBe(true);
             done();
@@ -128,7 +128,7 @@ $(function() {
 
         beforeEach(function(done){
             originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
             
             //loadFeed第一次加载
             loadFeed(2,function(){
