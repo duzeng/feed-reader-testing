@@ -84,20 +84,30 @@ $(function() {
          */
     describe('Initial Entries',function(){
         const feed=$('.feed');
+        let originalTimeout;
 
         beforeEach(function(done){
-            loadFeed(0,function(){
+            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+ 
+            loadFeed(1,function(){
                 done();
-            });
+            }); 
         });
 
         it('should grab initial entries',function(done){
+            //第一个.enctry jquery对象
             let child=feed.find('.entry:first-child');
             expect(child.length).not.toBe(0);
             //expect($(child[0]).hasClass('entry')).toBe(true);
             done();
-        })
-    })
+        });
+
+        afterEach(function() {
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        });
+    });
+
     /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
 
         /* TODO:
@@ -106,17 +116,40 @@ $(function() {
          */
     describe('New Feed Selection',function(){
         const feed=$('.feed'),
-            child=feed.find('h2:first-child');
+            //获取feed下异步加载后的对象内容
+            getContentFromFeedDom=function(){
+                const children=feed.find('h2');
+                // 返回内容
+                return Array.prototype.map.call(children,t=>$(t).html()).sort();  
+            };
+        //原有内容
+        let oldContent,
+        originalTimeout;
 
         beforeEach(function(done){
-            loadFeed(1,function(){
-                done();
+            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+            
+            //loadFeed第一次加载
+            loadFeed(2,function(){
+                //记录当前内容
+                oldContent=getContentFromFeedDom();
+                //loadFeed第二次加载
+                loadFeed(3,function(){
+                    done();
+                }); 
             });
         });
 
         it('should load new contents',function(done){
-
+            //获取当前新内容
+            const newConent=getContentFromFeedDom(); 
+            expect(newConent.join(' ')===oldContent.join(' ')).not.toBe(true);
             done();
-        })
+        });
+
+        afterEach(function() {
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        });
     })
 }());
