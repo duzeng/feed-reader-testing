@@ -3,7 +3,7 @@
  * 这是我们的 Rss 订阅阅读器应用。它使用 Goole Feed Reader API 将 RSS
  * 源转换成我们能够利用的 JSON 对象。它还使用了 Handlebars 模板库和 Jquery.
  */
-
+ 
 // 所有的名字和链接都是真实可用的
 var allFeeds = [
     {

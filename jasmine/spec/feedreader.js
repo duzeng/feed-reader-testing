@@ -25,11 +25,23 @@ $(function() {
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
-
+        it('valid url',function(){
+            allFeeds.forEach(feeds=>{
+                expect(feeds.url).not.toBeUndefined();
+                expect(feeds.url.length).not.toBe(0);
+                expect(feeds.url).toMatch(/^https?\:\/\/.+/)
+            });
+        });
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
+        it('property name not be empty',function(){
+            allFeeds.map(feeds=>{
+                expect(feeds.name).not.toBeUndefined();
+                expect(feeds.name.length).not.toBe(0);
+            });
+        });
     });
 
 
@@ -45,7 +57,22 @@ $(function() {
           * 测试应该包含两个 expectation ： 党点击图标的时候菜单是否显示，
           * 再次点击的时候是否隐藏。
           */
+    describe('The menu',function(){
+        const body=$('body'),
+            menuIconLink=$('.menu-icon-link'),
+            classForMenu='menu-hidden';
 
+        it('default hidden',function(){
+            expect(body.hasClass(classForMenu)).toBe(true);
+        });
+
+        it('toggle status',function(){
+            menuIconLink.trigger('click');
+            expect(body.hasClass(classForMenu)).toBe(false);
+            menuIconLink.trigger('click');
+            expect(body.hasClass(classForMenu)).toBe(true);
+        })
+    });
     /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
 
         /* TODO:
@@ -55,11 +82,41 @@ $(function() {
          * 记住 loadFeed() 函数是异步的所以这个而是应该使用 Jasmine 的 beforeEach
          * 和异步的 done() 函数。
          */
+    describe('Initial Entries',function(){
+        const feed=$('.feed');
 
+        beforeEach(function(done){
+            loadFeed(0,function(){
+                done();
+            });
+        });
+
+        it('should grab initial entries',function(done){
+            let child=feed.find('.entry:first-child');
+            expect(child.length).not.toBe(0);
+            //expect($(child[0]).hasClass('entry')).toBe(true);
+            done();
+        })
+    })
     /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
 
         /* TODO:
          * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
          * 记住，loadFeed() 函数是异步的。
          */
+    describe('New Feed Selection',function(){
+        const feed=$('.feed'),
+            child=feed.find('h2:first-child');
+
+        beforeEach(function(done){
+            loadFeed(1,function(){
+                done();
+            });
+        });
+
+        it('should load new contents',function(done){
+
+            done();
+        })
+    })
 }());
